@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adado — Modernize government for the AI era</title>
+    <meta name="description" content="AI agents and APIs that replace legacy systems, reduce costs, and improve citizen services.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --lavender: #9B8EC4;
+            --pink: #F5A0B8;
+            --sky: #8FD4E8;
+            --gold: #F0D86E;
+            --mint: #7DD4A0;
+            --ink: #2D2028;
+            --ink-light: #5C5259;
+            --ink-faint: #9A9298;
+            --white: #FEFCFB;
+            --off-white: #F6F4F2;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--ink);
+            background: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ---- NAV ---- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(254, 252, 251, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .wordmark {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            color: var(--ink);
+            text-decoration: none;
+        }
+
+        .nav-cta {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--ink);
+            text-decoration: none;
+            padding: 0.5rem 1.25rem;
+            border: 1.5px solid var(--ink);
+            border-radius: 2rem;
+            transition: background 0.25s, color 0.25s;
+        }
+
+        .nav-cta:hover {
+            background: var(--ink);
+            color: var(--white);
+        }
+
+        /* ---- HERO ---- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 2rem 4rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .hero-label {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards;
+            animation-delay: 0.15s;
+        }
+
+        .hero h1 {
+            font-family: 'Instrument Serif', serif;
+            font-weight: 400;
+            font-size: clamp(2.75rem, 6.5vw, 5.5rem);
+            line-height: 1.05;
+            letter-spacing: -0.025em;
+            max-width: 14ch;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeUp 0.7s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        .hero h1 .highlight {
+            display: inline;
+            background-image: linear-gradient(transparent 60%, var(--gold) 60%);
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            padding: 0 0.1em;
+        }
+
+        .hero-sub {
+            font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+            line-height: 1.6;
+            color: var(--ink-light);
+            max-width: 42ch;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeUp 0.7s ease forwards;
+            animation-delay: 0.5s;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--white);
+            background: var(--ink);
+            padding: 0.875rem 2rem;
+            border-radius: 2rem;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.25s, box-shadow 0.25s;
+            opacity: 0;
+            animation: fadeUp 0.7s ease forwards;
+            animation-delay: 0.7s;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(45, 32, 40, 0.15);
+        }
+
+        .hero-cta svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.25s;
+        }
+
+        .hero-cta:hover svg {
+            transform: translateX(3px);
+        }
+
+        /* floating color blocks — architectural accents */
+        .hero-accents {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .accent-block {
+            position: absolute;
+            border-radius: 4px;
+            opacity: 0;
+            animation: blockIn 0.8s ease forwards;
+        }
+
+        .accent-block:nth-child(1) {
+            width: 48px;
+            height: 48px;
+            background: var(--sky);
+            top: 18%;
+            right: 8%;
+            animation-delay: 0.9s;
+        }
+
+        .accent-block:nth-child(2) {
+            width: 28px;
+            height: 80px;
+            background: var(--pink);
+            top: 45%;
+            right: 14%;
+            animation-delay: 1.1s;
+        }
+
+        .accent-block:nth-child(3) {
+            width: 64px;
+            height: 24px;
+            background: var(--mint);
+            top: 70%;
+            right: 4%;
+            animation-delay: 1.3s;
+        }
+
+        .accent-block:nth-child(4) {
+            width: 20px;
+            height: 20px;
+            background: var(--lavender);
+            top: 30%;
+            right: 22%;
+            border-radius: 50%;
+            animation-delay: 1.0s;
+        }
+
+        .accent-block:nth-child(5) {
+            width: 36px;
+            height: 36px;
+            background: var(--gold);
+            top: 58%;
+            right: 24%;
+            animation-delay: 1.2s;
+        }
+
+        /* ---- PROBLEM / SOLUTION ---- */
+        .section-ps {
+            padding: 6rem 2rem;
+            background: var(--off-white);
+        }
+
+        .section-ps-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .ps-block {
+            position: relative;
+        }
+
+        .ps-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--ink-faint);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+        }
+
+        .ps-label::before {
+            content: '';
+            display: inline-block;
+            width: 24px;
+            height: 3px;
+            border-radius: 2px;
+        }
+
+        .ps-block.problem .ps-label::before {
+            background: var(--pink);
+        }
+
+        .ps-block.solution .ps-label::before {
+            background: var(--mint);
+        }
+
+        .ps-block h2 {
+            font-family: 'Instrument Serif', serif;
+            font-weight: 400;
+            font-size: clamp(1.5rem, 2.5vw, 2rem);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: 1rem;
+        }
+
+        .ps-block p {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            color: var(--ink-light);
+        }
+
+        .stat-row {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            background: var(--white);
+            border-radius: 8px;
+            border-left: 3px solid var(--pink);
+        }
+
+        .stat-number {
+            font-family: 'Instrument Serif', serif;
+            font-size: 1.75rem;
+            line-height: 1;
+            color: var(--ink);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-desc {
+            font-size: 0.75rem;
+            color: var(--ink-faint);
+            line-height: 1.4;
+        }
+
+        .solution-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .solution-tag {
+            font-size: 0.8125rem;
+            font-weight: 500;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            border: 1.5px solid;
+        }
+
+        .solution-tag:nth-child(1) {
+            border-color: var(--lavender);
+            color: var(--lavender);
+        }
+
+        .solution-tag:nth-child(2) {
+            border-color: var(--sky);
+            color: #5ABBD6;
+        }
+
+        .solution-tag:nth-child(3) {
+            border-color: var(--mint);
+            color: #5BB88A;
+        }
+
+        /* ---- FOOTER / CTA ---- */
+        .footer-cta {
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .footer-cta-inner {
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .footer-cta h2 {
+            font-family: 'Instrument Serif', serif;
+            font-weight: 400;
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-cta p {
+            font-size: 0.9375rem;
+            color: var(--ink-light);
+            margin-bottom: 2rem;
+        }
+
+        .email-form {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+
+        .email-form input {
+            flex: 1;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9375rem;
+            padding: 0.8rem 1.25rem;
+            border: 1.5px solid #D8D4D2;
+            border-radius: 2rem;
+            outline: none;
+            background: var(--white);
+            color: var(--ink);
+            transition: border-color 0.25s;
+        }
+
+        .email-form input::placeholder {
+            color: var(--ink-faint);
+        }
+
+        .email-form input:focus {
+            border-color: var(--lavender);
+        }
+
+        .email-form button {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9375rem;
+            font-weight: 500;
+            padding: 0.8rem 1.75rem;
+            border: none;
+            border-radius: 2rem;
+            background: var(--ink);
+            color: var(--white);
+            cursor: pointer;
+            white-space: nowrap;
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+
+        .email-form button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(45, 32, 40, 0.12);
+        }
+
+        .form-success {
+            display: none;
+            font-size: 0.9375rem;
+            color: var(--mint);
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        .form-success.show {
+            display: block;
+            animation: fadeUp 0.4s ease forwards;
+        }
+
+        /* copyright */
+        .copyright {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.75rem;
+            color: var(--ink-faint);
+            border-top: 1px solid var(--off-white);
+        }
+
+        /* ---- ANIMATIONS ---- */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes blockIn {
+            from {
+                opacity: 0;
+                transform: scale(0.7);
+            }
+            to {
+                opacity: 0.7;
+                transform: scale(1);
+            }
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.25rem;
+            }
+
+            .hero {
+                padding: 7rem 1.25rem 3rem;
+                min-height: 90vh;
+            }
+
+            .hero h1 {
+                max-width: 100%;
+            }
+
+            .hero-accents {
+                display: none;
+            }
+
+            .section-ps {
+                padding: 4rem 1.25rem;
+            }
+
+            .section-ps-inner {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .stat-row {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .footer-cta {
+                padding: 4rem 1.25rem;
+            }
+
+            .email-form {
+                flex-direction: column;
+            }
+
+            .email-form button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .wordmark {
+                font-size: 1.25rem;
+            }
+
+            .nav-cta {
+                font-size: 0.75rem;
+                padding: 0.4rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="/" class="wordmark">adado</a>
+        <a href="#notify" class="nav-cta">Get notified</a>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-accents">
+            <span class="accent-block"></span>
+            <span class="accent-block"></span>
+            <span class="accent-block"></span>
+            <span class="accent-block"></span>
+            <span class="accent-block"></span>
+        </div>
+        <p class="hero-label">AI infrastructure for government</p>
+        <h1>Modernize government for the <span class="highlight">AI era</span></h1>
+        <p class="hero-sub">AI agents and APIs that replace legacy systems, reduce costs, and improve citizen services.</p>
+        <div>
+            <a href="#notify" class="hero-cta">
+                Stay in the loop
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3.5 8h9M8.5 4l4 4-4 4"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <section class="section-ps">
+        <div class="section-ps-inner">
+            <div class="ps-block problem">
+                <p class="ps-label">The problem</p>
+                <h2>Legacy systems are draining government budgets</h2>
+                <p>Federal agencies spend billions maintaining decades-old infrastructure while citizen-facing services fall further behind. The backlog keeps growing.</p>
+                <div class="stat-row">
+                    <div class="stat">
+                        <div class="stat-number">~80%</div>
+                        <div class="stat-desc">of gov IT spend goes to maintaining legacy systems</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number">SSA, IRS, USCIS</div>
+                        <div class="stat-desc">face growing backlogs and processing slowdowns</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ps-block solution">
+                <p class="ps-label">What we build</p>
+                <h2>AI agents and modern APIs for government agencies</h2>
+                <p>We automate end-to-end workflows, unlock access to government data, and transition agencies off legacy infrastructure — safely and at scale.</p>
+                <div class="solution-tags">
+                    <span class="solution-tag">AI Agents</span>
+                    <span class="solution-tag">Modern APIs</span>
+                    <span class="solution-tag">Legacy Migration</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="footer-cta" id="notify">
+        <div class="footer-cta-inner">
+            <h2>We're just getting started</h2>
+            <p>Sign up to follow our progress as we build the future of government infrastructure.</p>
+            <form class="email-form" id="emailForm">
+                <input type="email" placeholder="you@agency.gov" required>
+                <button type="submit">Notify me</button>
+            </form>
+            <p class="form-success" id="formSuccess">Thanks, we'll be in touch.</p>
+        </div>
+    </section>
+
+    <footer class="copyright">
+        Adado &copy; 2026
+    </footer>
+
+    <script>
+        document.getElementById('emailForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.style.display = 'none';
+            document.getElementById('formSuccess').classList.add('show');
+        });
+    </script>
+
+</body>
+</html>
