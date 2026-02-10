@@ -614,8 +614,24 @@
     <script>
         document.getElementById('emailForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            this.style.display = 'none';
-            document.getElementById('formSuccess').classList.add('show');
+            var form = this;
+            var email = form.querySelector('input[type="email"]').value;
+            var btn = form.querySelector('button');
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+
+            fetch('https://script.google.com/macros/s/AKfycbzqH6xmA2f__ZwnN-qpAWvD78SOI8GSgQr5oXyekiVpha43s9P_oethu8IBnR3okulF/exec', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email })
+            }).then(function() {
+                form.style.display = 'none';
+                document.getElementById('formSuccess').classList.add('show');
+            }).catch(function() {
+                form.style.display = 'none';
+                document.getElementById('formSuccess').classList.add('show');
+            });
         });
     </script>
 
